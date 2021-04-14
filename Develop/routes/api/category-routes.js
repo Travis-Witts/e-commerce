@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
     const categorySearch = await Category.findByPk(req.params.id, {
       include: [{ model: Product }]
     });
-    res.status(200).json(err);
+    res.status(200).json(categorySearch);
   } catch (error) {
     console.log(error);
     res.status(404).json(error);
@@ -47,7 +47,7 @@ router.put('/:id', async (req, res) => {
         id: req.params.id,
       },
     })
-    res.status(200).json(updatedCategory);
+    res.status(200).json(`Category with the ID: ${req.params.id} name updated to ${req.body.category_name}`);
   } catch (error) {
     console.log(error);
     res.status(400).json(error);
@@ -61,7 +61,7 @@ router.delete('/:id', async (req, res) => {
       id: req.params.id,
     },
   });
-  res.status(200).json(deletedCategory);
+  res.status(200).json(`Category with the ID: ${req.params.id} has been deleted.`);
 } catch (error) {
   console.log(error);
   res.status(400).json(error);

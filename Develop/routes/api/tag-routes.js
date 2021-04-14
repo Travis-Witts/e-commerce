@@ -1,12 +1,11 @@
 const router = require('express').Router();
 const { Tag, Product, ProductTag } = require('../../models');
 
-// The `/api/tags` endpoint
 
 router.get('/', async (req, res) => {
   try {
     const allTags = await Tag.findAll({
-      include: [{ model: Product}]
+      include: "products"
     });
     res.status(200).json(allTags);
   } catch (error) {
@@ -18,7 +17,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const tagSearch = await Tag.findByPk(req.params.id, {
-      include: [{ model: Product }]
+      include: "products"
     });
     res.status(200).json(tagSearch);
   } catch (error) {
@@ -47,7 +46,7 @@ router.put('/:id', async (req, res) => {
         id: req.params.id,
       },
     })
-    res.status(200).json(updatedTag);
+    res.status(200).json(`Updated tag name to: ${req.body.tag_name} where ID is: ${req.params.id}`);
   } catch (error) {
   console.log(error);
   res.status(400).json(error);    
@@ -61,7 +60,7 @@ router.delete('/:id', async (req, res) => {
         id: req.params.id,
       },
     });
-    res.status(200).json(deletedTag);
+    res.status(200).json(`Deleted tag where ID is: ${req.params.id}`);
   } catch (error) {
     console.log(error);
     res.status(400).json(error);
